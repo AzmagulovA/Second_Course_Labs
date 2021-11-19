@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,19 @@ using System.Threading.Tasks;
 namespace Лабораторная__5
 {
     class Program
-    {
+    {static int Take_el(int a, int b)
+        {
+            bool ok;
+            int Op;
+            do
+            {
+
+                ok = int.TryParse(Console.ReadLine(), out Op);
+                if (!ok) Console.WriteLine("Error! Неверно ведено число.");
+                if ((Op > 3) || (Op <= 0)) Console.WriteLine("Error!Такой операции нет. Повторите попытку");
+            } while ((!ok) || (Op > b) || (Op < a));
+            return Op;
+        }
         static int[,] CreateTwo()//Создание двумерного массива
         {
             Console.WriteLine("____________________________");
@@ -25,6 +37,7 @@ namespace Лабораторная__5
 
                 ok = byte.TryParse(Console.ReadLine(), out Op);
                 if (!ok) Console.WriteLine("Error! Try again.");
+                if ((Op > 3) || (Op <= 0)) Console.WriteLine("Error! Такой опрации нет. Повторите попытку");
             } while ((!ok) || (Op > 3) || (Op <= 0));
 
 
@@ -44,7 +57,7 @@ namespace Лабораторная__5
                 } while ((!ok) || (colums == 0));
                 TwoD = CreatedTwoD(strings, colums);
 
-                //PrintOne(OneD);
+                
 
             }
             if (Op == 2)
@@ -232,6 +245,7 @@ namespace Лабораторная__5
 
                 ok = byte.TryParse(Console.ReadLine(), out Op);
                 if (!ok) Console.WriteLine("Error! Неверно введено число");
+                if ((Op > 3) || (Op <= 0)) Console.WriteLine("Error! Такой опрации нет. Повторите попытку");
             } while ((!ok) || (Op > 3) || (Op <= 0));
 
 
@@ -261,10 +275,10 @@ namespace Лабораторная__5
                     ok = byte.TryParse(Console.ReadLine(), out a);
                     if (!ok) Console.WriteLine("Error! Неверно введено число");
                 } while (!ok);
-                Console.WriteLine("Error! Неверно введено число");
+                
                 OneD = CreateOneDR(a);
                
-                //PrintOne(OneD);
+                
             }
             if (Op == 3)
             {
@@ -325,6 +339,7 @@ namespace Лабораторная__5
 
                     ok = byte.TryParse(Console.ReadLine(), out Op);
                     if (!ok) Console.WriteLine("Error! Неверно введено число");
+                    if ((Op > 4) || (Op <= 0)) Console.WriteLine("Error! Такой операции нет. Повторите попытку");
                 } while ((!ok) || (Op > 4) || (Op <= 0));
                 if (Op == 1)
                 {
@@ -417,6 +432,7 @@ namespace Лабораторная__5
 
                     ok = byte.TryParse(Console.ReadLine(), out Op);
                     if (!ok) Console.WriteLine("Error! Try again.");
+                    if ((Op > 4) || (Op <= 0)) Console.WriteLine("Error! Такой операции нет. Повторите попытку");
                 } while ((!ok) || (Op > 4) || (Op <= 0));
                 if (Op == 1)
                 {
@@ -483,6 +499,7 @@ namespace Лабораторная__5
 
                     ok = byte.TryParse(Console.ReadLine(), out Op);
                     if (!ok) Console.WriteLine("Error! Try again.");
+                    if ((Op <= 0)||(Op > 4)) Console.WriteLine("Error! Такой операции нет. Повторите попытку.");
                 } while ((!ok) || (Op > 4) || (Op <= 0));
                 if (Op == 1)
                 {
@@ -498,10 +515,9 @@ namespace Лабораторная__5
                 if (Op == 3)
                 {
                     Tornd=DeleteMax(Tornd);
-                    if (Tornd.Length != 0)
-                    {
+                    
                         PrintTord(Tornd);
-                    }
+                    
                         
                 }
                 if (Op == 4)
@@ -537,16 +553,12 @@ namespace Лабораторная__5
            
             byte a;
             bool ok;
-            byte Op;
+            int Op;
             int[][] TornD = new int[0][];
-            do
-            {
+            
 
-                ok = byte.TryParse(Console.ReadLine(), out Op);
-                if (!ok) Console.WriteLine("Error! Неверно ведено число.");
-            } while ((!ok) || (Op > 3) || (Op <= 0));
-
-
+            Op = Take_el(1, 3);
+           
             if (Op == 1)
             {
                 do
@@ -557,7 +569,6 @@ namespace Лабораторная__5
                 } while (!ok);
                 TornD = CreateTornD(a);
 
-                //PrintOne(OneD);
 
             }
             if (Op == 2)
@@ -645,7 +656,7 @@ namespace Лабораторная__5
             
             if (TornD.Length == 0)
             {
-                Console.WriteLine("Вашего массива нет!");
+               
                 return TornD;
             }
             else
@@ -683,7 +694,7 @@ namespace Лабораторная__5
                     
 
                 }
-                Console.WriteLine("Удаление самой длинной строки прошло успешно");
+                Console.WriteLine("Удаление самой длинной строки прошло успешно. Результат:");
                 return Helper;
             }
 
@@ -711,6 +722,7 @@ namespace Лабораторная__5
                    
                     ok = int.TryParse(Console.ReadLine(), out Op);
                     if (!ok) Console.WriteLine("Error! Неверно введено число");
+                    if ((Op > 4) || (Op <= 0)) Console.WriteLine("Error! Такой операции нет. Повторите попытку");
                 } while ((!ok) || (Op > 4) || (Op <= 0));
                 
                 switch (Op)
