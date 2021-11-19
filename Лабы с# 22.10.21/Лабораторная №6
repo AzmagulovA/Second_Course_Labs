@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,35 @@ namespace Лабораторная_работа_номер_6
 {
     class Program
     {
+        static int Take_el(int a,int b)
+        {
+            bool ok;
+            int Op;
+            if (b != 0)
+            {
+                do
+                {
+
+                    ok = int.TryParse(Console.ReadLine(), out Op);
+                    if (!ok) Console.WriteLine("Error! Неверно введено число");
+                    if ((Op > b) || (Op < a)) Console.WriteLine("Error!Такой операции нет. Повторите попытку");
+                } while ((!ok) || (Op > b) || (Op < a));
+                return Op;
+            }
+            else
+            {
+
+                do
+                {
+
+                    ok = int.TryParse(Console.ReadLine(), out Op);
+                    if (!ok) Console.WriteLine("Error! Неверно введено число");
+                   
+                } while (!ok );
+                return Op;
+
+            }
+        }
         static void PrintOne(int[] OneD)//печать одномерного массива
         {
 
@@ -25,83 +54,53 @@ namespace Лабораторная_работа_номер_6
         static int[] CreateOneD(int a)//Создание одномерного массива методом ручного ввода 
         {
             int[] OneD = new int[a];
-            bool ok;
+           
             int fig;
             for (int i = 0; i < a; i++)
             {
 
-                do
-                {
-
-                    ok = int.TryParse(Console.ReadLine(), out fig);
-                    if (!ok) Console.WriteLine("Error! Неверно введено число");
-                } while (!ok);
+               
+                fig = Take_el(1, 0);
 
                 OneD[i] = fig;
             }
             return OneD;
         }
         static int[] CreateOne()//создание одномерного массива 
-        {
-
-            //Console.WriteLine("Работа с одномерными массивами");
+        {           
             Console.WriteLine("____________________________________");
             Console.WriteLine("1) Создать массив вручную");
             Console.WriteLine("2) Создать массив с помощью ДСЧ");
             Console.WriteLine("3) Назад");
-
-            byte a;
-            bool ok;
-            byte Op;
+            int a;           
+            int Op;
             int[] OneD = new int[0];
-            do
-            {
-
-                ok = byte.TryParse(Console.ReadLine(), out Op);
-                if (!ok) Console.WriteLine("Error! Неверно введено число");
-            } while ((!ok) || (Op > 3) || (Op <= 0));
-
-
+            Op = Take_el(1, 3);
             if (Op == 1)
             {
-                do
-                {
-                    Console.Write("Введите размер одномерного массива (max 255) ");
-                    ok = byte.TryParse(Console.ReadLine(), out a);
-                    if (!ok) Console.WriteLine("Error! Неверно введено число");
-                } while (!ok);
+                Console.Write("Введите размер одномерного массива (max 255) ");
+                a = Take_el(1,255);                
                 Console.WriteLine("Ваш одномерный массив");
                 OneD = CreateOneD(a);
-
-                //PrintOne(OneD);
-
             }
             if (Op == 2)
             {
-
-                do
-                {
-                    Console.Write("Введите размер одномерного массива (max 255) ");
-                    ok = byte.TryParse(Console.ReadLine(), out a);
-                    if (!ok) Console.WriteLine("Error! Неверно введено число");
-                } while (!ok);
-                Console.WriteLine("Error! Неверно введено число");
-                OneD = CreateOneDR(a);
-
-                //PrintOne(OneD);
+                Console.Write("Введите размер одномерного массива (max 255) ");
+                a = Take_el(1, 255);                
+                OneD = CreateOneDR(a);     
             }
             if (Op == 3)
             {
                 OneD = CreateOneDR(0);
-
             }
             return OneD;
         }
         static void WorkOneD()//Работа с одномерными массивами
         {
-            bool ok;
-            byte Op;
+           
+            int Op;
             int[] Oned = new int[0];
+            
             do
             {
                 Console.WriteLine("____________________________________");
@@ -109,14 +108,9 @@ namespace Лабораторная_работа_номер_6
                 Console.WriteLine("1) Создать массив");
                 Console.WriteLine("2) Печать массива");
                 Console.WriteLine("3) Сортировка четных элементов массива");
-                Console.WriteLine("4) Назад");
+                Console.WriteLine("4) Назад");               
+                Op = Take_el(1, 4);
 
-                do
-                {
-
-                    ok = byte.TryParse(Console.ReadLine(), out Op);
-                    if (!ok) Console.WriteLine("Error! Неверно введено число");
-                } while ((!ok) || (Op > 4) || (Op <= 0));
                 if (Op == 1)
                 {
                     Oned = CreateOne();
@@ -136,14 +130,9 @@ namespace Лабораторная_работа_номер_6
                 }
                 if (Op == 4)
                 {
-
                 }
 
             } while (Op != 4);
-
-
-
-
         }
         static int[] CreateOneDR(int a)//Создание одномерного массива методом ДСЧ
         {
@@ -154,7 +143,6 @@ namespace Лабораторная_работа_номер_6
             {
                 OneD[i] = rnd.Next(0, 255);
             }
-
             return OneD;
         }
         static int[] Sor(int[] OneD)
@@ -328,8 +316,8 @@ namespace Лабораторная_работа_номер_6
         }
         static void WorkePropos()
         {  
-            bool ok;
-            byte Op;           
+           
+            int Op;           
             string str="";            
             do
             {
@@ -339,12 +327,8 @@ namespace Лабораторная_работа_номер_6
                 Console.WriteLine("2) Печать строки");
                 Console.WriteLine("3) Перевернуть каждое нечетное предложение");
                 Console.WriteLine("4) Назад");
-                do
-                {
-                    ok = byte.TryParse(Console.ReadLine(), out Op);
-                    if (!ok) Console.WriteLine("Error! Неверно введено число");
-                } while ((!ok) || (Op > 4) || (Op <= 0));
-
+               
+                Op = Take_el(1, 4);
                 switch (Op)
                 {
                     case 1:
@@ -364,22 +348,16 @@ namespace Лабораторная_работа_номер_6
         }
     
         static void Main(string[] args)
-        {
-            bool ok;
+        {          
             int Op = 0;
+            
+            Console.WriteLine("1) Работа с одномерными массивами типа int");
+            Console.WriteLine("2) Работа со строками");
+            Console.WriteLine("3) Выход");
+          
             while (Op != 3)
-            {
-                do
-                {
-                    Console.WriteLine("____________________________________");
-                    Console.WriteLine("1. Работа с одномерным массивом  типа int");
-                    Console.WriteLine("2. Работа со строками");                    
-                    Console.WriteLine("3. Выход");
-                    Console.Write("Введите номер выполняемой операции:  ");
-                    ok = int.TryParse(Console.ReadLine(), out Op);
-                    if (!ok) Console.WriteLine("Error! Неверно введено число");
-                } while ((!ok) || (Op > 3) || (Op <= 0));
-
+            {                
+                Op = Take_el(1, 3);
                 switch (Op)
                 {
                     case 1:
@@ -390,10 +368,10 @@ namespace Лабораторная_работа_номер_6
                         break;                   
                     case 3:
                         break;
-
                 }
             }
         }
+
     }
 }
 
