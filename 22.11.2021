@@ -1,6 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
+<title>color </title>
+<style>
+input {color: #CCCCC0; background: #141414;}
+html, body{
+	height:100%
+}
+
+body{
+	
+	width: 100%;
+    height: 100%;
+}
+input[ name ="sqlz"] {
+font-size: 18px;
+height: 150px;
+width: 250px;
+ transform: translateY(250px);
+}
+
+  </style>
+</head>
+<?php
+
+
+echo"<body bgcolor='#1A1A1A' > ";
+?>
 <meta charset="UTF-8">
 <meta name="viewport"
 content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -9,29 +35,15 @@ content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=
 </head>
 <body>
 <form method="POST">
- <p>Имя: <input type="text" name="name" />      Sql: <input type="text" name="sqlz" /></p>
+ <p> <?php echo '<p style="color: #557180">' ?>  Имя новой базы данных: <input type="text" name="name" />      Sql: <input type="text" name="sqlz" /></p>
     <input type="submit"  value="Добавить"/>     <input type="submit"  value="Выполнить"/>  <input type="submit" name ="back" value="Назад"/>
-	
-
-
-
-
-
-
-
 </form>
 
 <?php
 
 
 
-$servername="localhost";
-$username="root";
-$password="";
-$dbname="lab4";
 
-
-$mysqli= new mysqli($servername,$username,$password,$dbname);
 header('Content-Type: text/html; charset=UTF-8');
 error_reporting(E_ALL);
 function Tree($mysqli){
@@ -142,42 +154,17 @@ $dbname="lab4";
 
 $mysqli= new mysqli($servername,$username,$password,$dbname);
 if (isset($_POST["back"])) {
-	 $mysqli= new mysqli($servername,$username,$password,$dbname);
-	 //Tree($mysqli);
-	 
- }
-
- 
- 
- //Tree($mysqli);
-$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error()); //подключение к БД
-$sql = mysqli_query($db , "SHOW DATABASES"); //запрос
-while ($row = mysqli_fetch_array($sql)) { // массив с данными
-    echo "База данных: <a href='?id_base={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
-}
- 
-//echo "В базе `test`: ".mysqli_num_rows($sql)." таблиц"; // вывод числа таблиц
- 
- 
-if (isset($_GET['id_base'])) { // если нажали на ссылку (название БД)
-	$lab4=$_GET['id_base'];
-$sql = mysqli_query($db , "SHOW TABLES FROM `$lab4`"); //запрос
- $dbname=$lab4;
-while ($row = mysqli_fetch_array($sql)) { // массив с данными
-    echo "Таблица: <a href='?id_table={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
-	
-   }
-   
-  // $dbname=$lab4;
-   
-}
-if (isset($_GET['id_table'])) {//если нажали на ссылку (таблиц
-
-	$db = mysqli_connect("localhost", "root", "", "$dbname") or die(mysqli_error());
-	$rs = mysqli_query($db , "SELECT * FROM ".$_GET['id_table'].""); //запрос на выборку данных и выбраной таблицы?>
-     <table border='1'>
+	ShowBases();
+	$mysqli= new mysqli($servername,$username,$password,$dbname);
+$db = mysqli_connect("localhost", "root", "", "$dbname") or die(mysqli_error());
+	$rst = mysqli_query($db , "SELECT * FROM `innodb_lock_waits`" ) //запрос на выборку данных и выбраной таблицы?>
+     <table border='1','<p style="color: #FEFCF5">'.>
 	 
     <?php
+	 while($i = $rst->fetch_assoc())
+        {
+            echo '<td>'.$i["Field"].'</th>';
+        }
     while($row_rs = mysqli_fetch_assoc($rs)) // массив с данными
     {
     ?>
@@ -185,8 +172,88 @@ if (isset($_GET['id_table'])) {//если нажали на ссылку (таб
     <?php
         foreach($row_rs as $val) //перебор массива в цикле
         {
+			
  
-            echo "<td>".$val."</td>"; //вывод данных
+            echo  "<td>".$val."</td>"; //вывод данных
+               
+        }
+    ?>
+	</tr>
+ 
+    <?php }?>
+ 
+</table>
+  
+
+
+ 
+<?php 
+	 
+ }
+ else{ShowBases();};
+ 
+ 
+
+ 
+ 
+ Function ShowBases(){
+$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error()); //подключение к БД
+$sql = mysqli_query($db , "SHOW DATABASES"); //запрос
+while ($row = mysqli_fetch_array($sql)) { // массив с данными
+    echo '<p style="color: #557180">'."База данных: <a href='?id_base={$row[0]}' >{$row[0]}</a><br> "; //вывод данных
+}
+ 
+//echo "В базе `test`: ".mysqli_num_rows($sql)." таблиц"; // вывод числа таблиц
+ 
+ 
+if (isset($_GET['id_base'])) { // если нажали на ссылку (название БД)
+$lab4=$_GET['id_base'];	
+file_put_contents('data2.txt', $_GET['id_base']);
+	
+$sql = mysqli_query($db , "SHOW TABLES FROM `$lab4`"); //запрос
+ $dbname=$lab4;
+while ($row = mysqli_fetch_array($sql)) { // массив с данными
+    echo "Таблица: <a href='?id_table={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
+	
+   }
+}
+   
+   
+   
+  // $dbname=$lab4;
+   
+}
+ 
+if (isset($_GET['id_table'])) {//если нажали на ссылку (таблиц
+$filename='data2.txt';
+$dbname=file_get_contents($filename);
+
+
+	$db = mysqli_connect("localhost", "root", "", "$dbname") or die(mysqli_error());
+	$rst = mysqli_query($db , "SHOW COLUMNS FROM ".$_GET['id_table']."");
+	 
+	
+       
+        
+
+	$rs = mysqli_query($db , "SELECT * FROM ".$_GET['id_table'].""); //запрос на выборку данных и выбраной таблицы?>
+     <table border='1','<p style="color: #FEFCF5">'.>
+	 
+    <?php
+	 while($i = $rst->fetch_assoc())
+        {
+            echo '<td>'.$i["Field"].'</th>';
+        }
+    while($row_rs = mysqli_fetch_assoc($rs)) // массив с данными
+    {
+    ?>
+        <tr>
+    <?php
+        foreach($row_rs as $val) //перебор массива в цикле
+        {
+			
+ 
+            echo  "<td>".$val."</td>"; //вывод данных
                
         }
     ?>
@@ -201,7 +268,7 @@ if (isset($_GET['id_table'])) {//если нажали на ссылку (таб
  
 <?php }
 	
-	
+ 	
 
 
 
@@ -234,6 +301,7 @@ while ($row = mysqli_fetch_array($sql)) { // массив с данными
  
  
 if (isset($_GET['id_table'])) { // если нажали на ссылку (название таблицы)
+
     $rs = mysqli_query($db , "SELECT * FROM ".$_GET['id_table'].""); //запрос на выборку данных и выбраной таблицы?>
      <table border='1'>
 	 
@@ -261,37 +329,14 @@ if (isset($_GET['id_table'])) { // если нажали на ссылку (на
  
 <?php }}
 
-if(isset($_POST["name"])){
-  
-    $name = $_POST["name"];
-	$sql = "SELECT * FROM categories";
-	mysqli_query($mysqli, $sql);
-if($result = $mysqli->query($sql)){
-    while($row = $result->fetch_array()){
-         
-        $rowsCount = (int)$result->num_rows;
-    }
-}
-$file="$name.txt";
-if( !file_exists($file)) {
-$fp = fopen($file, "w"); // ("r" - считывать "w" - создавать "a" - добовлять к тексту), мы создаем файл
-fwrite($fp, "$name");
-fclose ($fp);}
-	$rowsCount++;
-	$sql=("CREATE DATABASE $name ");
-	mysqli_query($mysqli, $sql);
-	$sql1=(" INSERT INTO `categories` (`id`, `title`, `parent`) VALUES
-($rowsCount, '$name', 0);");
-mysqli_query($mysqli, $sql1);
-Tree($mysqli);
-}
+
 if(isset($_POST["sqlz"])){
 	$name=$_POST["sqlz"];
 	$sql=($name);
 	if (mysqli_query($mysqli, $sql)) {
 
 } else {
-echo "Ошибка: " . mysqli_error($mysqli);
+//echo "Ошибка: " . mysqli_error($mysqli);
 }
 }
 ;
