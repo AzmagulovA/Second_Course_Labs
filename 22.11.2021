@@ -137,7 +137,7 @@ echo '<ul>'. $cat_menu .'</ul>';
 $servername="localhost";
 $username="root";
 $password="";
-$dbname="";
+$dbname="lab4";
 
 
 $mysqli= new mysqli($servername,$username,$password,$dbname);
@@ -146,22 +146,67 @@ if (isset($_POST["back"])) {
 	 //Tree($mysqli);
 	 
  }
+
+ 
  
  //Tree($mysqli);
-$db = mysqli_connect("localhost", "root", "", "") or die(mysqli_error()); //подключение к БД
+$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error()); //подключение к БД
 $sql = mysqli_query($db , "SHOW DATABASES"); //запрос
 while ($row = mysqli_fetch_array($sql)) { // массив с данными
-    echo "База данных: <a href='?id_table={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
+    echo "База данных: <a href='?id_base={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
 }
  
 //echo "В базе `test`: ".mysqli_num_rows($sql)." таблиц"; // вывод числа таблиц
  
  
-if (isset($_GET['id_table'])) { // если нажали на ссылку (название БД)
-	$lab4=$_GET['id_table'];
-
-	Table_Viv($lab4);
+if (isset($_GET['id_base'])) { // если нажали на ссылку (название БД)
+	$lab4=$_GET['id_base'];
+$sql = mysqli_query($db , "SHOW TABLES FROM `$lab4`"); //запрос
+ $dbname=$lab4;
+while ($row = mysqli_fetch_array($sql)) { // массив с данными
+    echo "Таблица: <a href='?id_table={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
+	
+   }
+   
+  // $dbname=$lab4;
+   
 }
+if (isset($_GET['id_table'])) {//если нажали на ссылку (таблиц
+
+	$db = mysqli_connect("localhost", "root", "", "$dbname") or die(mysqli_error());
+	$rs = mysqli_query($db , "SELECT * FROM ".$_GET['id_table'].""); //запрос на выборку данных и выбраной таблицы?>
+     <table border='1'>
+	 
+    <?php
+    while($row_rs = mysqli_fetch_assoc($rs)) // массив с данными
+    {
+    ?>
+        <tr>
+    <?php
+        foreach($row_rs as $val) //перебор массива в цикле
+        {
+ 
+            echo "<td>".$val."</td>"; //вывод данных
+               
+        }
+    ?>
+	</tr>
+ 
+    <?php }?>
+ 
+</table>
+  
+
+
+ 
+<?php }
+	
+	
+
+
+
+	//
+
   
 
 
@@ -172,15 +217,15 @@ function Table_Viv($lab4){
 $servername="localhost";
 $username="root";
 $password="";
-$dbname="$lab4";
+$dbname="lab4";
 
 
 $mysqli= new mysqli($servername,$username,$password,$dbname);
 
  
  //Tree($mysqli);
-$db = mysqli_connect("localhost", "root", "", "$lab4") or die(mysqli_error()); //подключение к БД
-$sql = mysqli_query($db , "SHOW TABLES FROM `$lab4`"); //запрос
+$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error()); //подключение к БД
+$sql = mysqli_query($db , "SHOW TABLES FROM 'lab4`"); //запрос
 while ($row = mysqli_fetch_array($sql)) { // массив с данными
     echo "Таблица: <a href='?id_table={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
 }
@@ -266,5 +311,3 @@ echo "Ошибка: " . mysqli_error($mysqli);
 
 </body>
 </html>
-
-
