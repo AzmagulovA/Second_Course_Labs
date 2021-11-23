@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>color </title>
+<style>
+input {color: #CCCCC0; background: #141414;}
+html, body{
+	height:100%
+}
+
+body{
+	
+	width: 100%;
+    height: 100%;
+}
+.concole {
+font-size: 18px;
+height: 150px;
+width: 250px;
+
+}
+
+
+
+
+
+  </style>
+</head>
+<?php
+
+
+echo"<body bgcolor='#1A1A1A' > ";
+?>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Document</title>
+</head>
+<body>
+<form method="POST">
+ <p> <?php echo '<p style="color: #557180">' ?>   <input type="text" name="name" placeholder="Навая БД" />   <input type="submit"  value="Добавить"/>      <input type="submit" name ="back" value="Назад"/>    </p>
+     <input type="text" class="concole"  placeholder="Sql запрос"/> <br/> <input type="submit"  value="Выполнить"/> 
+</form>
+
+<?php
+
+
+
+
+//header('Content-Type: text/html; charset=UTF-8');
+error_reporting(E_ALL);
+function Tree($mysqli){
+	
+	//Устанавливаем кодировку и вывод всех ошибок
+
+
+//Объектно-ориентированный стиль
+//$mysqli = new mysqli('localhost', 'user', 'pass', 'db');
+
+//Устанавливаем кодировку utf8
+$mysqli->query("SET NAMES 'utf8'");
+
+/*
+ * Это "официальный" объектно-ориентированный способ сделать это
+ * однако $connect_error не работал вплоть до версий PHP 5.2.9 и 5.3.0.
+ */
+if ($mysqli->connect_error) {
+    die('Ошибка подключения (' . $mysqli->connect_errno . ') '
+            . $mysqli->connect_error);
+}
+
+/*
+ * Если нужно быть уверенным в совместимости с версиями до 5.2.9,
+ * лучше использовать такой код
+ */
+if (mysqli_connect_error()) {
+    die('Ошибка подключения (' . mysqli_connect_errno() . ') '
+            . mysqli_connect_error());
+}
+
+//Получаем массив нашего меню из БД в виде массива
+function getCat($mysqli){
+    $sql = 'SELECT * FROM `categories`';
+    $res = $mysqli->query($sql);
+
+    //Создаем масив где ключ массива является ID меню
+    $cat = array();
+    while($row = $res->fetch_assoc()){
+        $cat[$row['id']] = $row;
+    }
+    return $cat;
+}
+
+//Функция построения дерева из массива от Tommy Lacroix
+function getTree($dataset) {
+    $tree = array();
+
+    foreach ($dataset as $id => &$node) {    
+        //Если нет вложений
+        if (!$node['parent']){
+            $tree[$id] = &$node;
+        }else{ 
+            //Если есть потомки то перебераем массив
+            $dataset[$node['parent']]['childs'][$id] = &$node;
+        }
+    }
+    return $tree;
+}
+
+//Получаем подготовленный массив с данными
+$cat  = getCat($mysqli); 
+
+//Создаем древовидное меню
+$tree = getTree($cat);
+
+//Шаблон для вывода меню в виде дерева
+function tplMenu($category){
+    $menu = '<li>
+        <a <a href="#" title="'. $category['title'] .'">'. 
+        $category['title'].'</a>';
+        
+        if(isset($category['childs'])){
+            $menu .= '<ul>'. showCat($category['childs']) .'</ul>';
+			//
+        }
+    $menu .= '</li>';
+    
+    return $menu;
+}
+
+/**
+* Рекурсивно считываем наш шаблон
+**/
+function showCat($data){
+    $string = '';
+    foreach($data as $item){
+        $string .= tplMenu($item);
+    }
+    return $string;
+}
+
+//Получаем HTML разметку
+$cat_menu = showCat($tree);
+
+//Выводим на экран
+echo '<ul>'. $cat_menu .'</ul>';
+	
+}
+
+
+
+$servername="localhost";
+$username="root";
+$password="";
+$dbname="lab4";
+
+
+$mysqli= new mysqli($servername,$username,$password,$dbname);
+if (isset($_POST["back"])) {//Кнопка Назад
+	ShowBases();
+	$mysqli= new mysqli($servername,$username,$password,$dbname);
+$db = mysqli_connect("localhost", "root", "", "$dbname") or die(mysqli_error());
+	$rst = mysqli_query($db , "SELECT * FROM `innodb_lock_waits`" ) //запрос на выборку данных и выбраной таблицы?>
+     <table border='1','<p style="color: #FEFCF5">'.>
+	 
+    <?php
+	 /*while($i = $rst->fetch_assoc())
+        {
+            echo '<td>'.$i["Field"].'</th>';
+        }*/
+    while($row_rs = mysqli_fetch_assoc($rs)) // массив с данными
+    {
+    ?>
+        <tr>
+    <?php
+        foreach($row_rs as $val) //перебор массива в цикле
+        {
+			
+ 
+            echo  "<td>".$val."</td>"; //вывод данных
+               
+        }
+    ?>
+	</tr>
+ 
+    <?php }?> 
+</table>
+
+<?php 
+	 
+ }
+ else{ShowBases();};
+ 
+ 
+
+ 
+ 
+ Function ShowBases(){//Главное меню 
+$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error()); //подключение к БД
+$sql = mysqli_query($db , "SHOW DATABASES"); //запрос
+while ($row = mysqli_fetch_array($sql)) { // массив с данными
+    echo '<p style="color: #557180">'."База данных: <a href='?id_base={$row[0]}' >{$row[0]}</a><br> "; //вывод данных
+}
+ 
+//echo "В базе `test`: ".mysqli_num_rows($sql)." таблиц"; // вывод числа таблиц
+ } 
+ 
+if (isset($_GET['id_base'])) { // если нажали на ссылку (название БД)
+	$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error());
+$lab4=$_GET['id_base'];	
+file_put_contents('data2.txt', $_GET['id_base']);
+	
+$sql = mysqli_query($db , "SHOW TABLES FROM `$lab4`"); //запрос
+ $dbname=$lab4;
+while ($row = mysqli_fetch_array($sql)) { // массив с данными
+    echo "Таблица: <a href='?id_table={$row[0]}'>{$row[0]}</a><br>"; //вывод данных	
+   }
+  echo "<a href='data3.php' >Новая таблица</a><br>";   
+}  
+ 
+
+if (isset($_GET['id_table'])) {//если нажали на ссылку (таблица)
+$filename='data2.txt';
+$dbname=file_get_contents($filename);
+	$db = mysqli_connect("localhost", "root", "", "$dbname") or die(mysqli_error());
+	$rst = mysqli_query($db , "SHOW COLUMNS FROM ".$_GET['id_table']."");
+	$rs = mysqli_query($db , "SELECT * FROM ".$_GET['id_table'].""); //запрос на выборку данных и выбраной таблицы?>
+     <table border='1','<p style="color: #FEFCF5">'.>	 
+    <?php
+	 while($i = $rst->fetch_assoc())
+        {
+            echo '<td>'.$i["Field"].'</th>';
+        }
+    while($row_rs = mysqli_fetch_assoc($rs)) // массив с данными
+    {
+    ?>
+        <tr>
+    <?php
+        foreach($row_rs as $val) //перебор массива в цикле
+        {
+            echo  "<td>".$val."</td>"; //вывод данных               
+        }
+    ?>
+	</tr>
+ 
+    <?php }?>
+ 
+</table>
+ 
+<?php 
+
+}
+
+function Table_Viv($lab4){
+$servername="localhost";
+$username="root";
+$password="";
+$dbname="lab4";
+
+
+$mysqli= new mysqli($servername,$username,$password,$dbname);
+
+ 
+ //Tree($mysqli);
+$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error()); //подключение к БД
+$sql = mysqli_query($db , "SHOW TABLES FROM 'lab4`"); //запрос
+while ($row = mysqli_fetch_array($sql)) { // массив с данными
+    echo "Таблица: <a href='?id_table={$row[0]}'>{$row[0]}</a><br>"; //вывод данных
+}
+ 
+//echo "В базе `test`: ".mysqli_num_rows($sql)." таблиц"; // вывод числа таблиц
+ 
+ 
+if (isset($_GET['id_table'])) { // если нажали на ссылку (название таблицы)
+
+    $rs = mysqli_query($db , "SELECT * FROM ".$_GET['id_table'].""); //запрос на выборку данных и выбраной таблицы?>
+     <table border='1'>
+	 
+    <?php
+    while($row_rs = mysqli_fetch_assoc($rs)) // массив с данными
+    {
+    ?>
+        <tr>
+    <?php
+        foreach($row_rs as $val) //перебор массива в цикле
+        {
+ 
+            echo "<td>".$val."</td>"; //вывод данных
+               
+        }
+    ?>
+	</tr>
+ 
+    <?php }?>
+ 
+</table>
+  
+
+
+ 
+<?php }}
+
+
+
+if(isset($_POST["name"])){
+		$nam=$_POST["name"];
+	$db = mysqli_connect("localhost", "root", "", "lab4") or die(mysqli_error()); //подключение к БД
+//$sql=("CREATE DATABASE '$nam'");
+mysqli_query($db, "CREATE DATABASE" .$nam."");
+
+
+	if (mysqli_query($db, "CREATE DATABASE " .$nam."")) {
+
+}};
+
+
+if(isset($_POST["sqlz"])){
+	$name=$_POST["sqlz"];
+	$sql=($name);
+	if (mysqli_query($mysqli, $db)) {
+
+} else {
+
+}
+};
+
+
+
+
+
+?>
+
+
+
+
+
+?>
+</table>
+
+</body>
+</html>
