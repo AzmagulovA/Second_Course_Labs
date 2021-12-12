@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,10 +31,8 @@ namespace Lab_10
         {
             get => name;
             set
-            {
-               
-                    name = value;
-                
+            {               
+                    name = value;               
             }
         }
 
@@ -84,6 +82,21 @@ namespace Lab_10
             Name =m;
             Gender_m = s;
             count++;
+        }
+        public virtual void print()
+        {
+            Console.WriteLine($"Имя:{Name}");
+            Console.WriteLine($"Возраст:{Age}");
+            if (gender_m == true)
+            {
+                Console.WriteLine($"Пол: Мужской");
+            }
+            else
+            {
+                Console.WriteLine($"Пол: Женский");
+            }
+            Console.WriteLine();
+
         }
 
     }
