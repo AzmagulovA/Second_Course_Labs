@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +29,22 @@ namespace Lab_10
             base(age,name,gender_m)
         {
             Exp = ex;
+        }
+        public override void print()
+        {
+            Console.WriteLine($"Имя:{Name}");
+            Console.WriteLine($"Возраст:{Age}");
+            if (Gender_m == true)
+            {
+                Console.WriteLine($"Пол: Мужской");
+            }
+            else
+            {
+                Console.WriteLine($"Пол: Женский");
+            }
+            Console.WriteLine($"Год обучения:{Exp}");
+            Console.WriteLine();
+
         }
     }
 }
