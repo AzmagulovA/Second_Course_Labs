@@ -6,38 +6,57 @@ using System.Threading.Tasks;
 
 namespace Lab12
 {
-     class MyCollection<T>:IEnumerable<T>
+     class MyCollection<T>
     {
 
+        Point<T> beg = null;
+       
 
-        class MyNumerator<T> : IEnumerator<T>
+       
+
+        public MyCollection() //Создание пустой коллекции
         {
-            Point<T> beg;
-            Point<T> current;
-            public MyNumerator(MyCollection<T> list)
+            beg = new Point<T>();
+            Point<T> p = beg;
+        }
+        public MyCollection(int capacity)//Cоздание коллекции емкостью capacity
+         {
+            beg = new Point<T>();
+            Point<T> p = beg;
+            for(int i = 0; i < capacity; i++)
             {
-                beg = list.beg;
-                current = null;
+                Point<T> temp = new Point<T>();
+                p.next = temp;
+                p = temp;
             }
-            public T Current => current.data;
-            object IEnumerator.Current => current;
-            public void Dispose()
-            {
 
-            }
-            public bool MoveNext()
-            {
-                if (current == null)
-                {
-                    current = beg;
-                }
-                else
-                    current = current.next;
-                return current != null;
-            }
 
         }
-        Point<T> beg = null;
+        public int Length(MyCollection<T> c)//  Колличество элементов коллекции
+        {
+            int length=0;
+            Point<T> p = c.beg;
+            while (p != null)
+            {
+                length++;
+                p = p.next;
+
+            }
+                return length;
+        }
+        public MyCollection(MyCollection<T> c) //создание коллекции с элементами коллекции с
+        {
+            beg = new Point<T>();
+            Point<T> p = c.beg;
+            Point<T> helper = c.beg;
+            for (int i = 0; i < Length(c); i++)
+            {
+                Point<T> temp = helper.next;
+                p.next = temp;
+                p = temp;
+            }
+        }
+
 
 
     }
