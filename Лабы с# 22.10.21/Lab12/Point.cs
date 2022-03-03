@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Lab12
 {
-     class Point<T>
+     class Point<T>:ICloneable where T:ICloneable,new()
     {
         public T data;
         public Point<T> next;
@@ -24,6 +24,10 @@ namespace Lab12
         public override string ToString()
         {
             return data.ToString()+" ";
+        }
+        public object Clone()
+        {
+            return new Point<T> { data =(T)data.Clone(), next=this.next };
         }
 
 
