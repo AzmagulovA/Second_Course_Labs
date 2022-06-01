@@ -1,0 +1,711 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Threading;
+
+namespace MouseMove
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            Opacity = 0;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            MoveMouseLongCol(SystemInformation.VirtualScreen.Width, SystemInformation.VirtualScreen.Height);
+        }
+       
+        private bool CursorChange()//проверка на изменение курсора (рука)
+        {
+            return this.Cursor == Cursors.Hand;
+            
+        }
+        private void SetAndClick(int x,int y)//постановка и нажатие курсором
+        {
+            SetCursorPos(x, y + 75);
+            while (CursorChange() == false)
+            {
+                Thread.Sleep(100);
+            }
+            ClickMouse();
+        }
+        private void MoveUnderGround(int x,int y) //прохождение 1 боя
+        {
+            SetCursorPos(x, y + 75);
+            Thread.Sleep(200);
+            ClickMouse();
+
+        } 
+
+        private bool ColorCh(int x, int y,Color c)
+        {
+            SetCursorPos(x, y);
+            Color col = ColorPicker.GetColorAt(x, y);
+            return col == c;
+        }
+
+        private void ColorClickS(int x, int y)
+        {
+            Thread.Sleep(500);          
+            int i = 0;
+            if (ColorCh(x, y, Color.FromArgb(255, 1, 1, 0)))//если можно напасть
+            {
+
+                SetCursorPos(x, y);//1
+                Thread.Sleep(600);
+                ClickMouse();
+                while (ColorCh(479, 878, Color.FromArgb(255, 104, 139, 149)))//пока состояние боя
+                {
+                    SetCursorPos(479, 878);
+                    Thread.Sleep(200);
+                    SetCursorPos(986, 483 + 75);//back
+                    Thread.Sleep(300);
+                    ClickMouse();
+
+                }
+                                     
+                    if (ColorCh(625, 605, Color.FromArgb(255, 97, 97, 97))) { Thread.Sleep(2000); }//если шляпа серая 
+
+                    while (!ColorCh(979, 549, Color.FromArgb(255, 1, 1, 0)))//пока нет цвета на далее
+                    {
+                        i++;
+                        if (i == 1)
+                        {
+                            SetCursorPos(989, 511 + 75);
+                            Thread.Sleep(300);
+                            SetCursorPos(986, 483 + 75);//back
+                            Thread.Sleep(600);
+                            ClickMouse();
+                            Thread.Sleep(1300);
+                        }
+                        SetCursorPos(958, 555 + 75);
+                        if (i == 1) { Thread.Sleep(2500); }
+                        else Thread.Sleep(4800);
+                        SendKeys.SendWait("{ENTER}");
+                        if (i > 2) { ClickMouse(); break; }
+                        Thread.Sleep(2000);
+                    }
+                Thread.Sleep(2000);
+                ClickMouse();                                   
+            }
+
+        }
+        private void MoveMouseLongColS(int screenWidth, int screenHeight)
+        {
+
+            int i = 0;
+            int c = 0;
+            SetCursorPos(409, 1045);//MW
+            Thread.Sleep(200);
+            ClickMouse();
+
+            while (c != 125)
+            {
+
+                // ColorClick (820, 561,0);
+               
+                Thread.Sleep(500);
+
+                while (!ColorCh(983, 562, Color.FromArgb(255, 1, 1, 0)))
+                {
+                    Thread.Sleep(1800);
+                    SetCursorPos(820, 561);//1
+                    Thread.Sleep(400);
+
+                    ClickMouse();
+                    SetCursorPos(989, 511 + 75);
+                    Thread.Sleep(300);
+                    SetCursorPos(986, 483 + 75);//back
+                    Thread.Sleep(600);
+                    ClickMouse();
+                    Thread.Sleep(1200);
+
+                    ClickMouse();
+                    if (ColorCh(625, 605, Color.FromArgb(255, 97, 97, 97))) { Thread.Sleep(2000); }
+                    while (!ColorCh(979, 549, Color.FromArgb(255, 1, 1, 0)))
+                    {
+
+
+                        if (i == 1)
+                        {
+                            SetCursorPos(989, 511 + 75);
+                            Thread.Sleep(300);
+                            SetCursorPos(986, 483 + 75);//back
+                            Thread.Sleep(600);
+                            ClickMouse();
+                            Thread.Sleep(1300);
+                        }
+                        i++;
+                        Thread.Sleep(4800);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(2600);
+                        if (i > 3) break;
+                    }
+                    i = 0;
+                    ClickMouse();
+                    Thread.Sleep(4000);
+
+                }
+
+                ColorClickS(983, 562);
+                ColorClickS(805, 561);
+                ColorClickS(992, 562);
+
+                ColorClickS(827, 560);
+                ColorClickS(1052, 559);
+                ColorClickS(866, 561);
+                ColorClickS(1019, 561);
+
+                //ColorClick(851, 560,0);
+                Thread.Sleep(2000);
+                while (!ColorCh(1017, 559, Color.FromArgb(255, 1, 1, 0)))
+                {
+                    SetCursorPos(851, 560);//1
+                    Thread.Sleep(600);
+                    ClickMouse();
+                    while (ColorCh(479, 878, Color.FromArgb(255, 104, 139, 149)))//пока состояние боя
+                    {
+                        SetCursorPos(479, 878);
+                        Thread.Sleep(200);
+                        SetCursorPos(986, 483 + 75);//back
+                        Thread.Sleep(300);
+                        ClickMouse();
+
+                    }
+
+                    if (ColorCh(625, 605, Color.FromArgb(255, 97, 97, 97))) { Thread.Sleep(2000); }//если шляпа серая 
+
+                    while (!ColorCh(979, 549, Color.FromArgb(255, 1, 1, 0)))//пока нет цвета на далее
+                    {
+                        i++;
+                        if (i == 1)
+                        {
+                            SetCursorPos(989, 511 + 75);
+                            Thread.Sleep(300);
+                            SetCursorPos(986, 483 + 75);//back
+                            Thread.Sleep(600);
+                            ClickMouse();
+                            Thread.Sleep(1300);
+                        }
+                        SetCursorPos(958, 555 + 75);
+                        if (i == 1) { Thread.Sleep(2500); }
+                        else Thread.Sleep(4800);
+                        SendKeys.SendWait("{ENTER}");
+                        if (i > 2) { ClickMouse(); break; }
+                        Thread.Sleep(2000);
+                    }
+                    ClickMouse();
+
+                }
+                ColorClick(1017, 559, 0);
+                ColorClick(811, 559, 0);
+                ColorClick(998, 561, 0);
+
+                i = 0;
+
+                while (!ColorCh(751, 355, Color.FromArgb(255, 255, 240, 227)))
+                {
+
+                    i++;
+                    //Thread.Sleep(4000);
+                    SetCursorPos(958, 555 + 75);
+                    SendKeys.SendWait("{ENTER}");
+                    Thread.Sleep(3000);
+                    SetCursorPos(958, 555 + 75);//new
+                    Thread.Sleep(200);
+                    ClickMouse();
+                    if (i > 2) break;
+                }
+            }
+
+            }
+            private void ColorClick(int x, int y, int k)
+        {
+            
+            Thread.Sleep(500);
+                    k++;
+
+            int i = 0;
+            if (ColorCh(x, y, Color.FromArgb(255, 1, 1, 0)))
+            {
+                while (ColorCh(x, y, Color.FromArgb(255, 1, 1, 0)))
+                {
+                    SetCursorPos(x, y);//1
+                    Thread.Sleep(600);
+                    ClickMouse();
+
+
+                    SetCursorPos(989, 511 + 75);
+                  
+                    SetCursorPos(986, 483 + 75);//back
+                    Thread.Sleep(600);
+                    ClickMouse();
+                    Thread.Sleep(1300);
+
+                    if (ColorCh(625, 605, Color.FromArgb(255, 97, 97, 97))) { Thread.Sleep(2000); }
+                   
+                    while (!ColorCh(979, 549, Color.FromArgb(255, 1, 1, 0)))
+                    {
+                        i++;
+
+
+
+
+                        if (i == 1)
+                        {
+                            SetCursorPos(989, 511 + 75);
+                            Thread.Sleep(300);
+                            SetCursorPos(986, 483 + 75);//back
+                            Thread.Sleep(600);
+                            ClickMouse();
+                            Thread.Sleep(1300);
+                        }
+                        SetCursorPos(958, 555 + 75);
+                        if (i == 1) { Thread.Sleep(2500); }
+                        else Thread.Sleep(4800);
+                        SendKeys.SendWait("{ENTER}");
+                        if (i > 3) { ClickMouse(); break; }
+                        Thread.Sleep(2600);
+
+
+                    } 
+                        ClickMouse();
+
+                    k++;
+                    Thread.Sleep(500);
+                    if (k > 5) break;
+                }
+            }
+            else
+            {
+                if (k < 5)
+                {
+                    ColorClick(x, y, k);
+                }
+            }
+            Thread.Sleep(1200);
+        }
+        private void MoveMouseLongCol(int screenWidth, int screenHeight)
+        {
+
+            int i = 0;
+            int c = 0;
+            SetCursorPos(409, 1045);//MW
+            Thread.Sleep(200);
+            ClickMouse();
+            
+            while (c != 125)
+            {
+                
+               // ColorClick (820, 561,0);
+                while (!ColorCh(983, 562, Color.FromArgb(255, 1, 1, 0)))
+                {
+                    Thread.Sleep(1800);
+                    SetCursorPos(820, 561);//1
+                    Thread.Sleep(400);
+
+                    ClickMouse();
+                    SetCursorPos(989, 511 + 75);
+                    Thread.Sleep(300);
+                    SetCursorPos(986, 483 + 75);//back
+                    Thread.Sleep(600);
+                    ClickMouse();
+                    Thread.Sleep(1200);
+
+                    ClickMouse();
+                    if (ColorCh(625, 605, Color.FromArgb(255, 97, 97, 97))) { Thread.Sleep(2000); }
+                    while (!ColorCh(979, 549, Color.FromArgb(255, 1, 1, 0)))
+                    {
+                        
+
+                        if (i == 1)
+                        {
+                            SetCursorPos(989, 511 + 75);
+                            Thread.Sleep(300);
+                            SetCursorPos(986, 483 + 75);//back
+                            Thread.Sleep(600);
+                            ClickMouse();
+                            Thread.Sleep(1300);
+                        }
+                        i++;
+                        Thread.Sleep(4800);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(2600);
+                        if (i > 3) break;
+                    }
+                    i = 0;
+                    ClickMouse();
+                    Thread.Sleep(4000);
+                    
+                }
+
+
+                ColorClick(983, 562,0);
+                ColorClick(805, 561,0);
+                ColorClick(992, 562,0);
+
+                ColorClick(827, 560,0);
+                ColorClick(1052, 559,0);
+                ColorClick(866, 561,0);
+                ColorClick(1019, 561,0);
+
+                //ColorClick(851, 560,0);
+                Thread.Sleep(2000);
+                while (!ColorCh(1017, 559, Color.FromArgb(255, 1, 1, 0)))
+                {
+                    SetCursorPos(851, 560);//1
+                    Thread.Sleep(600);
+
+                    ClickMouse();
+                    SetCursorPos(989, 511 + 75);
+                    Thread.Sleep(300);
+                    SetCursorPos(986, 483 + 75);//back
+                    Thread.Sleep(600);
+                    ClickMouse();
+                    Thread.Sleep(1300);
+                    if (ColorCh(625, 605, Color.FromArgb(255, 97, 97, 97))) { Thread.Sleep(2000); }
+                    while (!ColorCh(979, 549, Color.FromArgb(255, 1, 1, 0)))
+                    {
+                        i++;
+                        if (i == 1)
+                        {
+                            SetCursorPos(989, 511 + 75);
+                            Thread.Sleep(300);
+                            SetCursorPos(986, 483 + 75);//back
+                            Thread.Sleep(600);
+                            ClickMouse();
+                            Thread.Sleep(1300);
+                        }
+                        Thread.Sleep(4800);
+                        SendKeys.SendWait("{ENTER}");
+                        Thread.Sleep(2600);
+                        if (i > 3) break;
+
+                    }
+                    ClickMouse();
+                    Thread.Sleep(4000);
+
+                }
+                ColorClick(1017, 559,0);
+                ColorClick(811, 559,0);
+                ColorClick(998, 561,0);
+
+                i = 0;
+                
+                while(!ColorCh(751, 355, Color.FromArgb(255, 255, 240, 227)))
+                {
+                    
+                    i++;
+                    //Thread.Sleep(4000);
+                    SetCursorPos(958, 555 + 75);
+                    SendKeys.SendWait("{ENTER}");
+                    Thread.Sleep(3000);
+                    SetCursorPos(958, 555 + 75);//new
+                    Thread.Sleep(200);
+                    ClickMouse();
+                    if (i > 5) break;
+                }
+                /*
+
+                while (!ColorCh(963, 587, Color.FromArgb(255, 203, 149, 35)))
+                {
+                    ClickMouse();
+                    i++;
+                    Thread.Sleep(4800);
+                    SendKeys.SendWait("{ENTER}");
+                    Thread.Sleep(3000);
+                    if (i > 3) break;
+
+                }
+
+
+
+                Thread.Sleep(1000);
+                ClickMouse();
+                SetCursorPos(958, 555 + 75);//new
+                Thread.Sleep(1500);
+                ClickMouse();
+                c++;
+                Thread.Sleep(1000);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);*/
+            }
+
+        }
+            private void MoveMouseLong(int screenWidth, int screenHeight)
+        {
+            POINT p = new POINT();            
+            int c = 0;
+            SetCursorPos(409, 1045);//MW
+            Thread.Sleep(200);
+            ClickMouse();
+            while (c!=65)
+            {
+                while (ColorCh(820, 559, Color.FromArgb(255, 1, 1, 0))){
+                    SetCursorPos(796, 482 + 75);//1
+                    Thread.Sleep(200);
+
+                    ClickMouse();
+                    SetCursorPos(989, 511 + 75);
+                    Thread.Sleep(600);
+                    SetCursorPos(986, 483 + 75);//back
+                    Thread.Sleep(400);
+                    ClickMouse();
+                    Thread.Sleep(4800);
+                    SendKeys.SendWait("{ENTER}");
+                    Thread.Sleep(3000);
+                    ClickMouse();
+                    Thread.Sleep(3200); 
+                }
+
+                SetCursorPos(968, 480 + 75);//2
+
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(780, 490 + 75);//3
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(991, 493 + 75);//4
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(796, 482 + 75);//5
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(1029, 479 + 75);//6
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(848, 483 + 75);//7
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(1016, 483 + 75);//8
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(839, 493 + 75);//9
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+                SetCursorPos(1012, 471 + 75);//10
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+
+
+
+
+                SetCursorPos(792, 498 + 75);//11
+                Thread.Sleep(200);
+
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+                Thread.Sleep(3200);
+
+                SetCursorPos(1002, 493 + 75);//12
+                Thread.Sleep(200);
+                ClickMouse();
+                SetCursorPos(989, 511 + 75);
+
+
+                Thread.Sleep(600);
+                SetCursorPos(986, 483 + 75);//back
+                Thread.Sleep(400);
+                ClickMouse();
+                Thread.Sleep(4800);
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(3000);
+                ClickMouse();
+
+                Thread.Sleep(4200);
+
+                SendKeys.SendWait("{ENTER}");
+                Thread.Sleep(4200);
+
+                SendKeys.SendWait("{ENTER}");
+
+                Thread.Sleep(4200);
+                SendKeys.SendWait("{ENTER}");
+                SetCursorPos(968, 471 + 75);//new
+
+                Thread.Sleep(1000);
+                ClickMouse();
+                SetCursorPos(958, 555 + 75);//new
+                Thread.Sleep(1000);
+                ClickMouse();
+
+
+
+
+                c++;
+                Thread.Sleep(4000);
+                
+            }
+
+
+        }
+
+
+        private void ClickMouse()
+        {
+            int c = 0;
+            POINT p=new POINT();
+            GetCursorPos(ref p);
+            ClientToScreen(Handle, ref p);
+            DoMouseLeftClick(p.x, p.y);
+          
+        }
+        [DllImport("user32.dll")]
+        public static extern long SetCursorPos(int x, int y);
+        [DllImport("user32.dll")]
+        public static extern bool ClientToScreen(IntPtr hWnd, ref POINT point);
+        [StructLayout(LayoutKind.Sequential)]
+        public struct POINT
+        {
+            public int x;   
+            public int y;
+        }
+        [DllImport("user32.dll")]
+        public static extern void mouse_event(int dsflag, int dx, int dy, int cButtons, int dsExtraInfo);
+
+        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        public const int MOUSEEVENTF_LEFTUP = 0x04;
+
+        public const int MOUSEEVENTF_RIGHTDOWN = 0x08;
+        public const int MOUSEEVENTF_RIGHTUP = 0x10;
+        private void DoMouseLeftClick(int x,int y)
+        {
+            mouse_event(MOUSEEVENTF_LEFTDOWN, x, y, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, x, y, 0, 0);
+        }
+        private void DoMouseRightClick(int x, int y)
+        {
+            mouse_event(MOUSEEVENTF_LEFTDOWN, x, y, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, x, y, 0, 0);
+        }
+        [DllImport("user32.dll")]
+        public static extern bool GetCursorPos(ref POINT lpPoint);
+
+
+    }
+}
